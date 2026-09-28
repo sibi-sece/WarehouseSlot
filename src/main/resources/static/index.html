@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Slotting & Picklist</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="topbar">
+    <div>
+        <div class="brand">Warehouse Slotting</div>
+        <div class="muted">Slotting, inventory and picklist management</div>
+    </div>
+    <span id="health" class="status">Checking...</span>
+</header>
+
+<nav class="nav">
+    <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+    <button class="nav-btn" data-section="products">Products</button>
+    <button class="nav-btn" data-section="bins">Bins</button>
+    <button class="nav-btn" data-section="receive">Receive Stock</button>
+    <button class="nav-btn" data-section="orders">Orders & Picklist</button>
+    <button class="nav-btn" data-section="reports">Reports</button>
+</nav>
+
+<main>
+<section id="dashboard" class="section active">
+    <h1>Warehouse Dashboard</h1>
+    <div id="cards" class="cards"></div>
+    <div class="panel">
+        <h2>How the system works</h2>
+        <div class="flow">
+            <span>Product</span><b>→</b><span>Velocity</span><b>→</b><span>Slotting</span>
+            <b>→</b><span>Bin</span><b>→</b><span>Order</span><b>→</b><span>Picklist</span>
+            <b>→</b><span>Pick</span>
+        </div>
+    </div>
+</section>
+
+<section id="products" class="section">
+    <div class="section-head"><h1>Products</h1><button onclick="loadAll()">Refresh</button></div>
+    <div class="panel">
+        <form id="productForm" class="grid-form">
+            <input id="sku" placeholder="SKU" required>
+            <input id="productName" placeholder="Product name" required>
+            <input id="description" placeholder="Description">
+            <select id="velocity">
+                <option value="HIGH">HIGH</option>
+                <option value="MEDIUM" selected>MEDIUM</option>
+                <option value="LOW">LOW</option>
+            </select>
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+    <div class="panel"><div id="productsTable"></div></div>
+</section>
+
+<section id="bins" class="section">
+    <div class="section-head"><h1>Warehouse Bins</h1><button onclick="loadAll()">Refresh</button></div>
+    <div class="panel">
+        <form id="binForm" class="grid-form">
+            <input id="binCode" placeholder="Bin code" required>
+            <select id="zone"><option value="NEAR_DISPATCH">NEAR_DISPATCH</option><option value="FAR">FAR</option></select>
+            <input id="capacity" type="number" min="1" placeholder="Capacity" required>
+            <input id="routeOrder" type="number" min="0" placeholder="Route order" required>
+            <button type="submit">Add Bin</button>
+        </form>
+    </div>
+    <div class="panel"><div id="binsTable"></div></div>
+</section>
+
+<section id="receive" class="section">
+    <h1>Receive Incoming Stock</h1>
+    <div class="panel">
+        <p class="muted">The system chooses the bin automatically using velocity, zone preference and available capacity.</p>
+        <form id="receiveForm" class="grid-form">
+            <select id="receiveProduct" required></select>
+            <input id="receiveQuantity" type="number" min="1" placeholder="Quantity" required>
+            <button type="submit">Receive & Slot</button>
+        </form>
+        <div id="receiveResult" class="result"></div>
+    </div>
+    <div class="panel"><div id="inventoryTable"></div></div>
+</section>
+
+<section id="orders" class="section">
+    <h1>Orders & Picklist</h1>
+    <div class="panel">
+        <form id="orderForm">
+            <input id="customerName" placeholder="Customer name" required>
+            <div id="orderLines"></div>
+            <button type="button" onclick="addOrderLine()">+ Add Item</button>
+            <button type="submit">Create Order</button>
+        </form>
+    </div>
+    <div class="panel"><div id="ordersTable"></div></div>
+    <div class="panel">
+        <h2>Selected Picklist</h2>
+        <div id="picklist"></div>
+    </div>
+</section>
+
+<section id="reports" class="section">
+    <h1>Reports</h1>
+    <div class="panel"><h2>Product Velocity & Stock</h2><div id="productReport"></div></div>
+    <div class="panel"><h2>Bin Utilization</h2><div id="binReport"></div></div>
+</section>
+</main>
+
+<div id="toast"></div>
+<script src="/js/script.js"></script>
+</body>
+</html>
